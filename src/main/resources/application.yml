@@ -1,0 +1,12 @@
+server:
+  port: 8000
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    username: root
+    password: wjsansrk
+    url: jdbc:mysql://localhost:3307/java?useUnicode=true&characterEncoding=utf8
+
