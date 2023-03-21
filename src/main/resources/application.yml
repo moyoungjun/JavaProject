@@ -1,5 +1,9 @@
 server:
   port: 8000
+jwt:
+  secretKey: hisecreykeyqwdhuqwdhquwhdioquwhdqwhdowqhdoqwhodwhqod
+  expiration: 500
+  refreshExpiration: 120960
 
 spring:
   mvc:
