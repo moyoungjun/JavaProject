@@ -1,30 +1,41 @@
 package com.javaproject.service;
 
 import com.javaproject.entity.User;
-import com.javaproject.properties.JwtProperties;
 import com.javaproject.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Component
+@RequiredArgsConstructor
 public class JwtService {
-    private JwtProperties jwtProperties;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
+    @Value("${jwt.secretKey}")
+    String secret;
 
-    public SecretKey secretKey;
+    @Value("${jwt.expiration}")
+    Long expiration;
+
+    private SecretKey secretKey;
 
     @PostConstruct
-    public void init() {
-        secretKey = Keys.hmacShaKeyFor(jwtProperties.secretKey.getBytes(StandardCharsets.UTF_8));
+    protected void init() {
+        secretKey = Keys.hmacShaKeyFor(
+                secret.getBytes(StandardCharsets.UTF_8));
     }
 
     public String createJWT(User user) {
@@ -39,15 +50,22 @@ public class JwtService {
 
 
         LocalDateTime currentDate = LocalDateTime.now();
-        Long expiration = jwtProperties.expiration;
+
 
         return Jwts.builder()
                 .setHeader(headers)
                 .setClaims(payloads)
                 .setIssuedAt(Timestamp.valueOf(currentDate))
                 .setExpiration(Timestamp.valueOf(currentDate.plusSeconds(expiration)))
-                .signWith(this.secretKey) //Signature
+                .signWith(secretKey) //Signature
                 .compact();
     }
-
+    //토큰의 모든 정보 반환
+    private Claims getAllClaims(String token){
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+    }
+    public LocalDateTime getExpiration(String token) {
+        Date expiration = getAllClaims(token).getExpiration();
+        return expiration.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
 }
