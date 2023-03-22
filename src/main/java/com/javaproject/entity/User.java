@@ -28,6 +28,9 @@ public class User implements UserDetails{
 
     @Comment("유저 비밀번호")
     private String password;
+
+    @Comment("유저 이름")
+    private String username;
     @Convert(converter = GrantedAuthoritySetAttributeConverter.class)
     private Set<GrantedAuthority> authorities;
 
@@ -44,7 +47,7 @@ public class User implements UserDetails{
 
     @Override
     public String getUsername() {
-        return null;
+        return userId;
     }
 
     @Override
