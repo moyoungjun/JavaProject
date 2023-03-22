@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @ConstructorBinding
 @Configuration("jwt")
 public class JwtProperties {
-    private String secretKey;
-    private Long expiration;
-    private Long refreshExpiration;
+    public String secretKey;
+    public Long expiration;
+    public Long refreshExpiration;
 }
