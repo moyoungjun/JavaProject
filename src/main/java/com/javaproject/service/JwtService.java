@@ -48,9 +48,7 @@ public class JwtService {
         Map<String, Object> payloads = new HashMap<>();
         payloads.put("userId", user.getUsername());
 
-
         LocalDateTime currentDate = LocalDateTime.now();
-
 
         return Jwts.builder()
                 .setHeader(headers)
