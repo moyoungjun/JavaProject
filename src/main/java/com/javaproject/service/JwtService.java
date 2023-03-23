@@ -1,5 +1,8 @@
 package com.javaproject.service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.javaproject.entity.User;
 import com.javaproject.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -13,8 +16,11 @@ import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,5 +71,21 @@ public class JwtService {
     public LocalDateTime getExpiration(String token) {
         Date expiration = getAllClaims(token).getExpiration();
         return expiration.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
+    //만료시간이 지나면 false
+    public Boolean validateToken(String token) {
+        try{
+            Date expiration = getAllClaims(token).getExpiration();
+            return expiration.after(java.sql.Date.valueOf(LocalDate.now()));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getUserId(String token) {
+        Claims claims = getAllClaims(token);
+        DecodedJWT decodedJWT = JWT.decode(token);
+        return String.valueOf(decodedJWT.getClaim("userId"));
     }
 }
