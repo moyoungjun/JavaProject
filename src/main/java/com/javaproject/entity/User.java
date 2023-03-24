@@ -40,6 +40,14 @@ public class User implements UserDetails{
         return authorities;
     }
 
+    public void setAuthorities(Set<GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public String getName() {
+        return username;
+    }
+
     @Override
     public String getPassword() {
         return password;

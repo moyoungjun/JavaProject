@@ -1,4 +1,4 @@
-package com.javaproject.common.error;
+package com.javaproject.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
