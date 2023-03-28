@@ -1,8 +1,5 @@
 package com.javaproject.service;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.javaproject.entity.User;
 import com.javaproject.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -16,11 +13,9 @@ import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,14 +46,15 @@ public class JwtService {
         headers.put("alg", "HS256");
 
         //Payload
-        Map<String, Object> payloads = new HashMap<>();
-        payloads.put("userId", user.getUsername());
+        Claims claims = Jwts.claims().setSubject(user.getUserId()).setId(user.getId().toString());
+        //Map<String, Object> payloads = new HashMap<>();
+        //payloads.put("userId", user.getUsername());
 
         LocalDateTime currentDate = LocalDateTime.now();
 
         return Jwts.builder()
                 .setHeader(headers)
-                .setClaims(payloads)
+                .setClaims(claims)
                 .setIssuedAt(Timestamp.valueOf(currentDate))
                 .setExpiration(Timestamp.valueOf(currentDate.plusSeconds(expiration)))
                 .signWith(secretKey) //Signature
@@ -85,7 +81,6 @@ public class JwtService {
 
     public String getUserId(String token) {
         Claims claims = getAllClaims(token);
-        DecodedJWT decodedJWT = JWT.decode(token);
-        return String.valueOf(decodedJWT.getClaim("userId"));
+        return claims.getId();
     }
 }
