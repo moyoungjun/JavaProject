@@ -4,15 +4,13 @@ import com.javaproject.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.Collections;
 
-import java.util.Set;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class AccountRequest{
     String userId;
     String password;
@@ -23,7 +21,7 @@ public class AccountRequest{
                 .userId(userId)
                 .password(password)
                 .username(userName)
-                .authorities(Set.of(new SimpleGrantedAuthority("ROLE_USER")))
+                .authorities(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")))
                 .build();
     }
     public void encodePassword(String encodedPassword) {
