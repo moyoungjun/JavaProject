@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/auth").permitAll()
+                .antMatchers("/api/auth","/swagger-ui/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/user").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
