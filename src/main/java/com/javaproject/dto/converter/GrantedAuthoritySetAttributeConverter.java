@@ -15,10 +15,13 @@ public class GrantedAuthoritySetAttributeConverter implements AttributeConverter
     //엔티티를 DB에 집어넣을때
     @Override
     public String convertToDatabaseColumn(Set<GrantedAuthority> attribute) {
-        return String.join(comma,attribute.toString());
+        String data = "";
+        for (GrantedAuthority grant: attribute) {
+            data += grant.getAuthority();
+        }
+        return data;
     }
     //DB에서 엔티티 필드로 변환할 때
-
     @Override
     public Set<GrantedAuthority> convertToEntityAttribute(String dbData) {
         return Arrays.stream(dbData.split(comma)).map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
