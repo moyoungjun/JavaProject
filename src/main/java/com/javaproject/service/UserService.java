@@ -1,5 +1,6 @@
 package com.javaproject.service;
 
+import com.javaproject.common.BaseException;
 import com.javaproject.dto.request.AccountRequest;
 import com.javaproject.dto.response.AccountResponse;
 import com.javaproject.dto.response.UserResponse;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.javaproject.common.ErrorCode.CONFIRM_PASSWORD;
 
 @RequiredArgsConstructor
 @Service
@@ -33,6 +36,10 @@ public class UserService {
     }
 
     public AccountResponse CreationUser(AccountRequest accountRequest) {
+        //비밀번호 일치 여부 확인
+        if(!accountRequest.getPassword().matches(accountRequest.getPasswordConfirm())){
+            throw new BaseException(CONFIRM_PASSWORD);
+        }
         String encode = passwordEncoder.encode(accountRequest.getPassword());
         accountRequest.encodePassword(encode);
         User user = accountRequest.toEntity();

@@ -6,6 +6,7 @@ import com.javaproject.dto.response.UserResponse;
 import com.javaproject.entity.User;
 import com.javaproject.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public UserResponse test(@PathVariable Long id) throws Exception {
+    public UserResponse getUser(@AuthenticationPrincipal @PathVariable Long id) throws Exception {
         return userService.getUser(id);
     }
 
