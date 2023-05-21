@@ -7,3 +7,7 @@ RestAPI - JWT,User,Notice </br>
 1.4 CustomFilter에 SecurityContext Authentication 저장 후 @Authenticationprincipal 어노테이션으로 Auth권한이 있는 유저 정보 가져오기 </br>
 1.5 공통 Excpetion, ExceptionHandling(Advice), ErrorCode (Enum - HttpStatus, ErrorCode) </br>
 1.6 공통 Method (CommonUtils) 생성 후 URL Match Method 추가
+<p align="center">
+  <img src="https://github.com/moyoungjun/JavaProject/assets/74341950/657c34a3-673d-4db1-938a-5dc1661f826b">
+</p>
+
